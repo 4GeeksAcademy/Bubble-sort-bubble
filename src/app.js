@@ -23,30 +23,32 @@ function generarCarta() {
   };
 }
 
-function selectionSort(arr = []) {
+
+function copiarArreglo(arr) {
+  return arr.map(carta => ({ ...carta }));
+}
+
+function bubbleSort(arr = []) {
   const len = arr.length;
   bubbleLog.innerHTML = '';
 
   for (let i = 0; i < len - 1; i++) {
-    let min = i;
-    for (let j = i + 1; j < len; j++) {
-      if (arr[j].numero < arr[min].numero) {
-        min = j;
+    for (let j = 0; j < len - 1 - i; j++) {
+      if (arr[j].numero > arr[j + 1].numero) {
+
+        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+
+        const filaPaso = document.createElement('div');
+        filaPaso.className = 'container d-flex flex-direction-row mb-2';
+
+        const copia = copiarArreglo(arr);
+        mostrarCartas(copia, filaPaso);
+        bubbleLog.appendChild(filaPaso);
       }
     }
-
-    if (min !== i) {
-      const temp = arr[i];
-      arr[i] = arr[min];
-      arr[min] = temp;
-    }
-
-    const filaPaso = document.createElement('div');
-    filaPaso.className = 'container d-flex flex-direction-row mb-2';
-
-    mostrarCartas(arr, filaPaso);
-    bubbleLog.appendChild(filaPaso);
   }
+
+  return arr;
 }
 
 function mostrarCartas(arr, contenedor) {
@@ -115,5 +117,5 @@ drawButton.addEventListener('click', () => {
 
 sortButton.addEventListener('click', () => {
   const cartasOrdenadas = [...cartasGeneradas];
-  selectionSort(cartasOrdenadas);
+  bubbleSort(cartasOrdenadas);
 });
